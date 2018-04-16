@@ -1,0 +1,23 @@
+{
+    "name": "forien/twitch-api",
+    "description": "PHP Wrapper for Twitch's new API",
+    "type": "library",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Forien",
+            "email": "mr.forien@gmail.com",
+            "homepage": "https://forien.pl",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Forien\\": "src/"
+        }
+    },
+    "require": {
+        "php": "~7.0",
+        "ext-curl": "*"
+    }
+}
