@@ -18,6 +18,8 @@ class BaseResponse
 
     protected function __construct($response)
     {
-        $this->pagination = new Pagination($response);
+        if (isset($response->pagination)) {
+            $this->pagination = new Pagination($response->pagination);
+        }
     }
 }

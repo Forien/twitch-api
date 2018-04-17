@@ -171,13 +171,10 @@ class TwitchApi
      */
     private function sendCurl(string $url, bool $post = false, array $headers = [])
     {
-        print_r($url);
-        print_r($headers);
 
         $curl = curl_init($url);
         if (count($headers)) {
             curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
-//            curl_setopt($curl, CURLOPT_HEADEROPT, CURLHEADER_UNIFIED);
         }
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         if ($post) {

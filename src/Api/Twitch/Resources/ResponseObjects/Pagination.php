@@ -21,8 +21,10 @@ class Pagination
      */
     public $cursor;
 
-    public function __construct($response)
+    public function __construct($pagination)
     {
-        $this->cursor = $response->pagination->cursor;
+        if (isset($pagination->cursor)) {
+            $this->cursor = $pagination->cursor;
+        }
     }
 }
