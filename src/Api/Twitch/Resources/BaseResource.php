@@ -132,7 +132,7 @@ abstract class BaseResource
         if (!$this->called) {
             $response = $this->api->apiCall($this, $this->authentication);
 
-            $this->response = new self::$responseClass($response);
+            $this->response = new static::$responseClass($response);
 
             $this->called = true;
         }
