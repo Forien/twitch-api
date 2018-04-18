@@ -9,16 +9,21 @@
 namespace Forien\Api\Twitch\Resources;
 
 
+use Forien\Api\Twitch\Resources\ResponseObjects\BaseResponse;
 use Forien\Api\Twitch\Traits\Parameterizable;
 use Forien\TwitchApi;
 
-class BaseResource
+abstract class BaseResource
 {
     use Parameterizable {
         __construct as __traitConstruct;
         setParams as traitSetParams;
     }
 
+    /**
+     * @var string
+     */
+    protected static $responseClass = BaseResponse::class;
     /**
      * @var array
      */
@@ -51,6 +56,17 @@ class BaseResource
      * @var bool
      */
     protected $called = false;
+
+    /**
+     * BaseResource constructor.
+     *
+     * @param TwitchApi $api
+     * @param array     $params
+     */
+    public function __construct(TwitchApi $api, array $params = [])
+    {
+        $this->__traitConstruct($api, $params);
+    }
 
     /**
      * @return array|null
@@ -90,5 +106,37 @@ class BaseResource
     public function getEndpoint(): string
     {
         return $this->endpoint;
+    }
+
+    /**
+     * @return mixed|BaseResponse
+     * @throws \Forien\Exceptions\ApiException
+     * @throws \Forien\Exceptions\TwitchApiException
+     */
+    public function get()
+    {
+        if (!$this->called) {
+            $this->call();
+        }
+
+        return $this->response;
+    }
+
+    /**
+     * @return static
+     * @throws \Forien\Exceptions\ApiException
+     * @throws \Forien\Exceptions\TwitchApiException
+     */
+    public function call()
+    {
+        if (!$this->called) {
+            $response = $this->api->apiCall($this, $this->authentication);
+
+            $this->response = new self::$responseClass($response);
+
+            $this->called = true;
+        }
+
+        return $this;
     }
 }

@@ -26,4 +26,6 @@ abstract class Endpoints extends BaseEndpoints
     const TWITCH_API_URL = 'https://api.twitch.tv/helix/';
 
     const GET_STREAMS = 'streams';
+    const GET_GAMES = 'games';
+    const GET_USERS = 'users';
 }

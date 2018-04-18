@@ -10,46 +10,40 @@ namespace Forien\Api\Twitch\Resources;
 
 
 use Forien\Api\Twitch\Endpoints;
-use Forien\Api\Twitch\Resources\ResponseObjects\Streams as StreamResponse;
+use Forien\Api\Twitch\Resources\ResponseObjects\Users as UserResponse;
 use Forien\TwitchApi;
 
 /**
- * Class Streams
+ * Class Users
  *
  * @package Forien\Api\Twitch\Resources
  */
-class Streams extends BaseResource
+class Users extends BaseResource
 {
     /**
      * @var string
      */
-    protected static $responseClass = StreamResponse::class;
+    protected static $responseClass = UserResponse::class;
     /**
      * @var array
      */
     protected $possibleParams = [
-        'after'        => 'string',
-        'before'       => 'string',
-        'community_id' => 'string',
-        'first'        => 'integer',
-        'game_id'      => 'string',
-        'language'     => 'string',
-        'user_ud'      => 'string',
-        'user_login'   => 'string'
+        'id'    => 'string',
+        'login' => 'string'
     ];
     /**
-     * @var StreamResponse
+     * @var UserResponse
      */
     protected $response;
     /**
      * @var array
      */
-    protected $authentication = ['client-id'];
+    protected $authentication = ['authorization'];
 
     public function __construct(TwitchApi $api, array $params = [])
     {
         $this->url = Endpoints::TWITCH_API_URL;
-        $this->endpoint = Endpoints::GET_STREAMS;
+        $this->endpoint = Endpoints::GET_GAMES;
 
         parent::__construct($api, $params);
     }
@@ -57,19 +51,19 @@ class Streams extends BaseResource
     /**
      * @param array $params
      *
-     * @return Streams
+     * @return Users
      */
-    public function setParams(array $params = []): Streams
+    public function setParams(array $params = []): Users
     {
         return $this->traitSetParams($params);
     }
 
     /**
-     * @return StreamResponse
+     * @return UserResponse
      * @throws \Forien\Exceptions\ApiException
      * @throws \Forien\Exceptions\TwitchApiException
      */
-    public function get(): StreamResponse
+    public function get(): UserResponse
     {
         return parent::get();
     }

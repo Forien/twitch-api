@@ -13,7 +13,9 @@ use Forien\Api\RequestBuilder;
 use Forien\Api\Twitch\Endpoints;
 use Forien\Api\Twitch\OidcResponse;
 use Forien\Api\Twitch\Resources\BaseResource;
+use Forien\Api\Twitch\Resources\Games;
 use Forien\Api\Twitch\Resources\Streams;
+use Forien\Api\Twitch\Resources\Users;
 use Forien\Api\Twitch\Scope;
 use Forien\Exceptions\TwitchApiException;
 
@@ -200,10 +202,22 @@ class TwitchApi
     {
         $headers = [];
 
-        if (in_array('authorization', $auth)) {
+        if (in_array('authorization_optional', $auth)) {
+            if (!empty($this->accessToken)) {
+                $headers[] = "Authorization: Bearer {$this->accessToken}";
+            }
+        } elseif (in_array('authorization', $auth)) {
+            if (empty($this->accessToken)) {
+                $class = get_class($resource);
+                throw new TwitchApiException("access_token required for call of '{$class}' resource");
+            }
             $headers[] = "Authorization: Bearer {$this->accessToken}";
         }
         if (in_array('client-id', $auth)) {
+            if (empty($this->accessToken)) {
+                $class = get_class($resource);
+                throw new TwitchApiException("Client-ID required for call of '{$class}' resource");
+            }
             $headers[] = "Client-ID: {$this->clientId}";
         }
 
@@ -270,5 +284,39 @@ class TwitchApi
         $streams = new Streams($this, $params);
 
         return $streams;
+    }
+
+    /**
+     * @param array $params Assoc array with parameters for Query String
+     *
+     * @return Games
+     * @throws TwitchApiException
+     */
+    public function getGames(array $params = []): Games
+    {
+        if (empty($this->clientId)) {
+            throw new TwitchApiException('Client-ID is needed to be set for getGames()');
+        }
+
+        $games = new Games($this, $params);
+
+        return $games;
+    }
+
+    /**
+     * @param array $params Assoc array with parameters for Query String
+     *
+     * @return Users
+     * @throws TwitchApiException
+     */
+    public function getUsers(array $params = []): Users
+    {
+        if (empty($this->clientId) && empty($this->accessToken)) {
+            throw new TwitchApiException('Either Client-ID or access_token is required to be set for getUsers()');
+        }
+
+        $games = new Users($this, $params);
+
+        return $games;
     }
 }
