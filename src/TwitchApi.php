@@ -214,7 +214,7 @@ class TwitchApi
             $headers[] = "Authorization: Bearer {$this->accessToken}";
         }
         if (in_array('client-id', $auth)) {
-            if (empty($this->accessToken)) {
+            if (empty($this->clientId)) {
                 $class = get_class($resource);
                 throw new TwitchApiException("Client-ID required for call of '{$class}' resource");
             }
