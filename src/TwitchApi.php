@@ -200,11 +200,14 @@ class TwitchApi
      */
     public function apiCall(BaseResource $resource, array $auth = [])
     {
+        $useFallback = false;
         $headers = [];
 
         if (in_array('authorization_optional', $auth)) {
             if (!empty($this->accessToken)) {
                 $headers[] = "Authorization: Bearer {$this->accessToken}";
+            } else {
+                $useFallback = true;
             }
         } elseif (in_array('authorization', $auth)) {
             if (empty($this->accessToken)) {
@@ -217,6 +220,12 @@ class TwitchApi
             if (empty($this->clientId)) {
                 $class = get_class($resource);
                 throw new TwitchApiException("Client-ID required for call of '{$class}' resource");
+            }
+            $headers[] = "Client-ID: {$this->clientId}";
+        } elseif (in_array('fallback-client-id', $auth)) {
+            if ($useFallback && empty($this->clientId)) {
+                $class = get_class($resource);
+                throw new TwitchApiException("Client-ID required as a fallback for call of '{$class}' resource");
             }
             $headers[] = "Client-ID: {$this->clientId}";
         }

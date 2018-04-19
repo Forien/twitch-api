@@ -61,13 +61,13 @@ class UsersData
     {
         $this->id = $data->id;
         $this->login = $data->login;
-        $this->displayName = $data->displayName;
+        $this->displayName = $data->display_name;
         $this->type = $data->type;
-        $this->broadcasterType = $data->broadcasterType;
+        $this->broadcasterType = $data->broadcaster_type;
         $this->description = $data->description;
-        $this->profileImageUrl = $data->profileImageUrl;
-        $this->offlineImageUrl = $data->offlineImageUrl;
-        $this->viewCount = $data->viewCount;
+        $this->profileImageUrl = $data->profile_image_url;
+        $this->offlineImageUrl = $data->offline_image_url;
+        $this->viewCount = $data->view_count;
         if (isset($data->email)) {
             $this->email = $data->email;
         }

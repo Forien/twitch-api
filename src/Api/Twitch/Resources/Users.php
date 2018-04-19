@@ -38,12 +38,12 @@ class Users extends BaseResource
     /**
      * @var array
      */
-    protected $authentication = ['authorization_optional'];
+    protected $authentication = ['authorization_optional', 'fallback-client-id'];
 
     public function __construct(TwitchApi $api, array $params = [])
     {
         $this->url = Endpoints::TWITCH_API_URL;
-        $this->endpoint = Endpoints::GET_GAMES;
+        $this->endpoint = Endpoints::GET_USERS;
 
         parent::__construct($api, $params);
     }
