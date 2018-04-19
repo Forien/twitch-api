@@ -38,7 +38,7 @@ class Users extends BaseResource
     /**
      * @var array
      */
-    protected $authentication = ['authorization'];
+    protected $authentication = ['authorization_optional'];
 
     public function __construct(TwitchApi $api, array $params = [])
     {
